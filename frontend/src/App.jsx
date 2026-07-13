@@ -3,11 +3,8 @@ import { useEffect, useState } from "react";
 const EXAMPLE_URL = "https://arxiv.org/pdf/1706.03762";
 const ANALYSE_PATH = "/api/analyse";
 
-// Points at your backend. Set VITE_API_URL in a .env file for production
-// (e.g. https://your-backend.onrender.com). Falls back to localhost for dev.
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
-console.log("API_URL =", API_URL);
 
 
 function readStoredResult() {
@@ -58,10 +55,25 @@ export default function App() {
     setResult(null);
     setCopied(false);
 
-    if (!pdfUrl.trim()) {
+    const normalizedUrl = pdfUrl.trim();
+
+    if (!normalizedUrl) {
       setError("Please paste a PDF URL first.");
       return;
     }
+
+    try {
+      const parsed = new URL(normalizedUrl);
+      if (!["http:", "https:"].includes(parsed.protocol)) {
+        setError("Please provide a valid public PDF URL.");
+        return;
+      }
+    } catch {
+      setError("Please provide a valid public PDF URL.");
+      return;
+    }
+
+
 
     window.history.pushState({}, "", ANALYSE_PATH);
     setIsAnalyseRoute(true);
@@ -71,11 +83,16 @@ export default function App() {
       const res = await fetch(`${API_URL}/api/analyze`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ pdfUrl: pdfUrl.trim() }),
+        body: JSON.stringify({ pdfUrl: normalizedUrl }),
       });
 
-      const data = await res.json();
+      let data;
 
+      try {
+        data = await res.json();
+      } catch {
+        data = {};
+      }
       if (!res.ok) {
         setError(data.error || "Something went wrong. Please try again.");
         return;
@@ -174,11 +191,11 @@ export default function App() {
                 <span className="beam" />
               </div>
               <div className="scan-text">
-               Loading document...
+                Loading document...
                 <br />
-               Analyzing content...
+                Analyzing content...
                 <br />
-                 Generating AI insights...
+                Generating AI insights...
                 <span className="cursor" />
               </div>
             </div>
@@ -234,14 +251,10 @@ export default function App() {
           )}
         </div>
 
-
         <footer className="footer">
           AI PDF Analyzer • React • Express • Gemini API
         </footer>
-
       </div>
-
-
     </main>
   );
 }
