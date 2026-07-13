@@ -18,8 +18,12 @@ const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
 
 // Allow the frontend's origin. In dev this is Vite's default port.
 // In production, set FRONTEND_ORIGIN to your deployed frontend URL.
-const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || 'http://localhost:5173';
-app.use(cors({ origin: FRONTEND_ORIGIN }));
+
+
+// const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || 'http://localhost:5173';
+// app.use(cors({ origin: FRONTEND_ORIGIN }));
+
+app.use(cors());
 app.use(express.json());
 
 function isLikelyPdfUrl(url) {
