@@ -136,12 +136,15 @@ export default function App() {
           <span className="dot" />
           <span className="dot" />
           <span className="dot" />
-          <span className="titlebar-label">AI Pdf-Analyser</span>
+          <span className="titlebar-label">AI Pdf-Analz
+            
+            
+            er</span>
         </div>
 
         <div className="body">
           <p className="eyebrow">Document intake</p>
-          <h1>AI PDF Analyser</h1>
+          <h1>AI PDF Analyzer</h1>
           <p className="subtitle">
             Paste a publicly accessible PDF URL. It's read server-side and
             returned as a structured analysis — document type, title, authors,
