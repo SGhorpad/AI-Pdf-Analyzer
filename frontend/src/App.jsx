@@ -136,10 +136,7 @@ export default function App() {
           <span className="dot" />
           <span className="dot" />
           <span className="dot" />
-          <span className="titlebar-label">AI Pdf-Analz
-            
-            
-            er</span>
+          <span className="titlebar-label">AI Pdf-Analzer</span>
         </div>
 
         <div className="body">
