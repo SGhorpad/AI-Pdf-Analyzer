@@ -8,7 +8,7 @@ export async function fetchWithTimeout(
 
   try {
     return await fetch(url, {
-      ...options,
+      ...options, // Spread the provided options
       signal: controller.signal,
     });
   } catch (err) {

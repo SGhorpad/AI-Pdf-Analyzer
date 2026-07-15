@@ -29,6 +29,8 @@ export default function App() {
     return window.location.pathname === ANALYSE_PATH;
   });
 
+
+  //sync route with browser history
   useEffect(() => {
     const syncRoute = () => {
       setIsAnalyseRoute(window.location.pathname === ANALYSE_PATH);
@@ -40,6 +42,8 @@ export default function App() {
     return () => window.removeEventListener("popstate", syncRoute);
   }, []);
 
+
+  //load stored result if user refreshes page on analyse route
   useEffect(() => {
     if (isAnalyseRoute && !result) {
       const storedResult = readStoredResult();
@@ -49,6 +53,9 @@ export default function App() {
     }
   }, [isAnalyseRoute, result]);
 
+
+
+  //after clicking analyze button 
   async function handleSubmit(e) {
     e.preventDefault();
     setError(null);
@@ -74,7 +81,7 @@ export default function App() {
     }
 
 
-
+    //user is on analyse path
     window.history.pushState({}, "", ANALYSE_PATH);
     setIsAnalyseRoute(true);
     setLoading(true);
@@ -107,6 +114,7 @@ export default function App() {
     }
   }
 
+  //handle copy
   function handleCopy() {
     if (!result) return;
     navigator.clipboard.writeText(JSON.stringify(result, null, 2)).then(() => {
@@ -180,6 +188,7 @@ export default function App() {
             </div>
           )}
 
+          {/* loading state when user clicks analyze button and waiting for response */}
           {loading && (
             <div className="scan-box">
               <div className="doc-silhouette">
@@ -201,11 +210,13 @@ export default function App() {
             </div>
           )}
 
+          {/* show result when user gets response from server */}
           {showResult && (
             <div className="result-box">
               <div className="result-head">
                 <span className="result-head-label">Analysis Result</span>
 
+                {/* buttons for new analysis and copy json */}
                 <div className="result-actions">
                   <button
                     className="new-btn"

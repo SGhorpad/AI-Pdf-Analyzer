@@ -79,7 +79,7 @@ async function callGemini(geminiUrl, prompt, base64Pdf) {
 
   if (!text) {
     const err = new Error("Unexpected Gemini response shape");
-    err.raw = geminiJson;
+    err.raw = geminiJson;  // Store the raw response for debugging
     throw err;
   }
 
